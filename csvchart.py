@@ -82,6 +82,18 @@ where:
 			self.chart['value'] = 'mean'
 			# mean, total, min, max, count, first, last, confidence, maxconfidence
 
+		if 'include_x_axis' in self.chart:
+			self.chart['include_x_axis'] = self.chart['include_x_axis'][0]
+			if self.chart['include_x_axis'].lower() == "true" or self.chart['include_x_axis'] == "1":
+				self.chart['include_x_axis'] = True
+			elif self.chart['include_x_axis'].lower() == "false" or self.chart['include_x_axis'] == "0":
+				self.chart['include_x_axis'] = False
+			else:
+				print(f"Unrecognized value {self.chart['include_x_axis']} for include_x_axis, ignoring.", file=sys.stderr)
+				self.chart['include_x_axis'] = False
+		else:
+			self.chart['include_x_axis'] = False
+
 
 	def _parsecsvmeta(self,m):
 		tmp = self._parsemeta(m)
@@ -177,12 +189,14 @@ if __name__ == '__main__':
 		label_font_size=14,
 	)
 
+	# width is computed based on number of records charted
 	x_labels = list(viz.data.keys())
 	width = len(x_labels) * viz.chart['recwidth']
 	if width < 1200:
-		width = 1200
+		width = 1200 # minimum width
 	#c = pygal.Line(
 	c = viz.chart['type'](
+		include_x_axis=viz.chart['include_x_axis'],
 		interpolate=viz.chart['interpolation'],
 		title=viz.chart['title'],
 		style=custom_style,
@@ -191,10 +205,10 @@ if __name__ == '__main__':
 		secondary_range=viz.chart['secondary_range'],
 		x_label_rotation=300,
 	)
-	
 	c.x_labels = sorted(x_labels)
-	value = viz.chart['value']
 
+	# figure out what gets added to chart based on value= value in chart:... argument
+	value = viz.chart['value']
 	def guido(x,l):
 		if value == "confidence":
 			tmpvalue='mean'
@@ -209,7 +223,7 @@ if __name__ == '__main__':
 			tmpvalue=value
 			ci=None
 		if viz.data[x][l][tmpvalue] is None: 
-			return None # NOTE: need this to support incomplate lines
+			return None # NOTE: need this to support interrupted lines
 		o = {'value': round(viz.data[x][l][tmpvalue],2) }
 		if ci is not None:
 			o['ci'] = ci
