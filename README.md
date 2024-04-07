@@ -43,6 +43,7 @@ csvchart.py \
 ```
 Which results in [<img src="examples/ex1/example1b.svg">](examples/ex1/example1b.svg).
 
-Note that instead of `x-field=date,time`, this new command only has `x-field=date`. Since there are multiple records with the same `date`, by default, only the last record of that day will get charted. But by adding `value=confidence`, all the values for that day will be averaged, and then confidence intervals based on the minimum and maximum for that day. Other `value=` values are `min`, `max`, `mean`, `first`, and `last`.  A `value=` of `maxconfidence` graphs the maximum value for the day, while still showing the min/max confidence interval. LIkeways `minconfidence`.
+Note that instead of `x-field=date,time`, this new command only has `x-field=date` in the "csv:..." argument. Since there are multiple records with the same `date`, by default, only the last record of that day would get charted. But by adding `value=confidence` to the "chart:..." argument, all the values for that day will be averaged, and then confidence intervals based on the minimum and maximum for that day. Other `value=` values are `min`, `max`, `mean`, `first`, and `last`.  A `value=` of `maxconfidence` graphs the maximum value for the day, while still showing the min/max confidence interval. LIkeways `minconfidence`.
 
+The behaviour of `value=` in the "chart:..." argument has an aggregation effect that's similar to [GROUP BY](https://www.w3schools.com/sql/sql_groupby.asp) in SQL SELECT statements.
 
