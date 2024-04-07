@@ -4,7 +4,7 @@ python script that converts CSV files into SVG images
 
 Requires python's builtin `csv` module and the `pygal` module.
 
-Turns one or more CSV files into SVG image charts. Can concatenate multiple CSV files into one lgical database, from which it can chart mutiple values as different charted lines. Exposes a fair amount of the `pygal` functionality. although documentation is terrible.
+Turns one or more CSV files into SVG image charts. Can concatenate multiple CSV files into one logical database, from which it can chart multiple values as different charted lines. Exposes a fair amount of the `pygal` functionality. although documentation of such is terrible.
 
 ## Examples
 
@@ -28,8 +28,8 @@ csvchart.py \
 "chart:file=example1.svg;title=Example 1 temperature readings;interpolation=cubic;"
 ```
 
-Note the structure of this command, The `csvchart.py` command takes two (or more) arguments. The first is a "csv:..." argument, and it specifies the data source or sources. The rest of this argument are key/value pairs seperated by semicolons. The values may be lists, which are separted by commas. There's plenty to say here, but the most salient commaents are that the `file=` key accepts a list of CSV files that needs to have disjoint data ranges. The `x-field=` will be interepretted as the single X-axis variable. It can be multiple values, which will be concatenated together. This allows you to use CSV records where the `date` and `time` are seperate fields. Whereas the `y-fields` can also be alist, but each value will be charted separately (e.g. temperature vs humidity). If you have multiple y-fields, you can have multiple labels, and each label will be used for each Y value, in the same order as they are listed.
+Note the structure of this command, The `csvchart.py` command takes two (or more) arguments. The first is a "csv:..." argument, and it specifies the data source or sources. The rest of this argument are key/value pairs seperated by semicolons. The values may be lists, which are separted by commas. There's plenty to say here, but the most salient comments are that the `file=` key accepts a list of CSV files that needs to have disjoint data ranges. The `x-field=` will be interepretted as the single X-axis variable. It can be multiple values, which will be concatenated together. This allows you to use CSV records where the `date` and `time` are seperate fields. Whereas the `y-fields` can also be a list, but each value will be charted separately (e.g. temperature vs humidity). If you have multiple y-fields, you can have multiple labels, and each label will be used for each Y value, in the same order as they are listed.
 
 The second argument is the "chart:..." argument. It specifies how the resulting SVG chart looks. In this argument, most of the values are singletons, not list. For example, the `file=` key/value will specify the single SVG output file. Note that the [chosen interpolation](https://www.pygal.org/en/3.0.0/documentation/configuration/interpolations.html) can be very misleading. Right now, `csvchart` lets you choose any of the interpolation systels, but does not yet expose further attributes like `interpolation_parameters` or `interpolation_precision`.
 
-The result of the above command on the example 1 data looks like [<img src="examples/ex1/example1.svg">](examples/ex1/example1.svg").
+The result of the above command on the example 1 data looks like [<img src="examples/ex1/example1.svg">](examples/ex1/example1.svg).
