@@ -8,7 +8,7 @@ Turns one or more CSV files into SVG image charts. Can concatenate multiple CSV 
 
 ## Examples
 
-[Example 1](examples/ex1) Chart temperature and humidity from one logical data base, contained in three CSV files.
+#### [Example 1](examples/ex1) Chart temperature and humidity from one logical data base, contained in three CSV files.
 
 The start of `log1.csv` looks like this:
 ```
@@ -20,6 +20,7 @@ date,time,tempC,tempF,pressurePA,presureMB,light,R,G,B,heading,magnetometer0,mag
 
 `log2.csv`, `log3.csv`, etc have the same fields, and all files have disjoint data (no overlaps--they represent five days worth of readings).
 
+##### Example 1a
 We can create a chart of the temperature using this command:
 
 ```
@@ -34,6 +35,7 @@ The second argument is the "chart:..." argument. It specifies how the resulting 
 
 The result of the above command on the example 1 data looks like [<img src="examples/ex1/example1a.svg">](examples/ex1/example1a.svg).
 
+##### Example 1b
 Here's a different version of the above command. It will display an average of each day's temperatures, and will also draw in the min and max temperatures (drawn as [confidence intervals](https://www.pygal.org/en/3.0.0/documentation/configuration/value.html?highlight=confidence#confidence-intervals) )
 
 ```
@@ -45,5 +47,5 @@ Which results in [<img src="examples/ex1/example1b.svg">](examples/ex1/example1b
 
 Note that instead of `x-field=date,time`, this new command only has `x-field=date` in the "csv:..." argument. Since there are multiple records with the same `date`, by default, only the last record of that day would get charted. But by adding `value=confidence` to the "chart:..." argument, all the values for that day will be averaged, and then confidence intervals based on the minimum and maximum for that day. Other `value=` values are `min`, `max`, `mean`, `first`, and `last`.  A `value=` of `maxconfidence` graphs the maximum value for the day, while still showing the min/max confidence interval. LIkeways `minconfidence`.
 
-The behaviour of `value=` in the "chart:..." argument has an aggregation effect that's similar to [GROUP BY](https://www.w3schools.com/sql/sql_groupby.asp) in SQL SELECT statements.
+If this is confusing, consider that the behaviour of `value=` in the "chart:..." argument has an aggregation effect that's similar to [GROUP BY](https://www.w3schools.com/sql/sql_groupby.asp) in SQL SELECT statements. Now you are probably more confused...
 
