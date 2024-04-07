@@ -4,7 +4,7 @@ python script that converts CSV files into SVG images
 
 Requires python's builtin `csv` module and the `pygal` module.
 
-Turns one or more CSV files into SVG image charts. Can concatenate multiple CSV files into one logical database, from which it can chart multiple values as different charted lines. Exposes a fair amount of the `pygal` functionality. although documentation of such is terrible.
+Turns one or more CSV files into SVG image charts. Can concatenate multiple CSV files into one logical database, from which it can chart multiple values as different charted lines. Exposes a fair amount of the [PyGal](https://www.pygal.org) functionality. although documentation of such is terrible.
 
 ## Examples
 
@@ -49,7 +49,7 @@ Note that instead of `x-field=date,time`, this new command only has `x-field=dat
 
 If this is confusing, consider that the behaviour of `value=` in the "chart:..." argument has an aggregation effect that's similar to [GROUP BY](https://www.w3schools.com/sql/sql_groupby.asp) in SQL SELECT statements. Noo doubht you are no longer confused.
 
-This example also adds `include_x_axis=True` to the "chart:..." argument. This causes the chart to draw the Y scale all the way down to the X axis, which helps make this chart easier to understand, otherwise the confidence intervals get drawn off the bottom of the graph. This is due to the nature of this particular example data set, but a good reminder that some amount of dinking is usually needed to make the charts intelligible
+This example also adds `include_x_axis=True` to the "chart:..." argument. This causes the chart to draw the Y scale all the way down to the X axis, which helps make this chart easier to understand, otherwise the confidence intervals get drawn off the bottom of the graph (because PyGal doesn't consider the confidence intervals when computing the automatic scaling range for the Y axis). This is due to the nature of this particular example data set, but a good reminder that some amount of dinking is usually needed to make the charts intelligible
 
 #### [Example 2](examples/ex2) Chart temperature and humidity from three logical data bases, contained across fifteen different CSV files.
 
