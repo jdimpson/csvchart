@@ -41,6 +41,7 @@ csvchart.py \
 "csv:file=log1.csv,log2.csv,log3.csv,log4.csv,log5.csv;x-field=date;y-fields=tempC;labels=Celcius" \
 "chart:file=example1b.svg;title=Example 1b average daily temperature;interpolation=cubic;value=confidence"
 ```
+Which results in [<img src="examples/ex1/example1b.svg">](examples/ex1/example1b.svg).
 
 Note that instead of `x-field=date,time`, this new command only has `x-field=date`. Since there are multiple records with the same `date`, by default, only the last record of that day will get charted. But by adding `value=confidence`, all the values for that day will be averaged, and then confidence intervals based on the minimum and maximum for that day. Other `value=` values are `min`, `max`, `mean`, `first`, and `last`.  A `value=` of `maxconfidence` graphs the maximum value for the day, while still showing the min/max confidence interval. LIkeways `minconfidence`.
 
