@@ -82,6 +82,7 @@ where:
 			self.chart['value'] = 'mean'
 			# mean, total, min, max, count, first, last, confidence, maxconfidence
 
+		# probably don't need this now that we do our own autoscaling
 		if 'include_x_axis' in self.chart:
 			self.chart['include_x_axis'] = self.chart['include_x_axis'][0]
 			if self.chart['include_x_axis'].lower() == "true" or self.chart['include_x_axis'] == "1":
@@ -109,8 +110,14 @@ where:
 	def summarize(self, preval, newval):
 		preval['last'] = newval
 		preval['count'] += 1
-		if newval > preval['max']: preval['max'] = newval
-		if newval < preval['min']: preval['min'] = newval
+		if newval > preval['max']: 
+			preval['max'] = newval
+		if not hasattr(self, 'global_max') or newval > self.global_max:
+			self.global_max = newval
+		if newval < preval['min']: 
+			preval['min'] = newval
+		if not hasattr(self, 'global_min') or newval < self.global_min:
+			self.global_min = newval
 		preval['total'] += newval
 		preval['mean'] = preval['total'] / preval['count']
 		return preval
@@ -133,14 +140,11 @@ where:
 							if not l in seenlabels:
 								seenlabels[l]=c
 							y = float(r[f])
-							if l in self.data[x]:
-								#print(f"already have {l} in {x}: {y}")
-								self.data[x][l] = self.summarize(self.data[x][l], y)
-							else:
-								#print(f"adding {l} in {x}: {y}")
-								self.data[x][l] = {'mean': y, 'total': y, 'min': y, 'max': y, 'count': 1, 'first': y, 'last': y}
+							if l not in self.data[x]:
+								self.data[x][l] = {'mean': 0, 'total': 0, 'min': y, 'max': y, 'count': 0, 'first': y, 'last': y}
+							self.data[x][l] = self.summarize(self.data[x][l], y)
 				except Exception as e:
-					print(s,e)
+					print(s,e,file=sys.stderr)
 					raise e
 			for l in seenlabels: # locally seen
 				if l in self.seenlabels: # globally seen
@@ -167,14 +171,14 @@ if __name__ == '__main__':
 
 	viz = csvchart()
 	if len(sys.argv) <= 1:
-		print(viz.usage(sys.argv[0]))
+		print(viz.usage(sys.argv[0]), file=sys.stderr)
 		exit(1)
 	viz.parseargv(sys.argv[1:])
 	#print("sources")
 	#for s in viz.sources: print("\t",s)
 	if viz.chart is None:
-		print("no chart provided")
-		print(viz.usage(sys.argv[0]))
+		print("no chart provided", file=sys.stderr)
+		print(viz.usage(sys.argv[0]),file=sys.stderr)
 		exit(2)
 	#print("chart")
 	#print("\t",viz.chart)
@@ -195,6 +199,7 @@ if __name__ == '__main__':
 	if width < 1200:
 		width = 1200 # minimum width
 	#c = pygal.Line(
+	rang = (viz.global_min, viz.global_max)
 	c = viz.chart['type'](
 		include_x_axis=viz.chart['include_x_axis'],
 		interpolate=viz.chart['interpolation'],
@@ -203,6 +208,7 @@ if __name__ == '__main__':
 		#y_title=temp_unit,
 		width=width,
 		secondary_range=viz.chart['secondary_range'],
+		range=rang,
 		x_label_rotation=300,
 	)
 	c.x_labels = sorted(x_labels)
