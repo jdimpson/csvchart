@@ -41,15 +41,14 @@ Here's a different version of the above command. It will display an average of e
 ```
 csvchart.py \
 "csv:file=log1.csv,log2.csv,log3.csv,log4.csv,log5.csv;x-field=date;y-fields=tempC;labels=Celcius" \
-"chart:file=example1b.svg;title=Example 1b average daily temperature;interpolation=cubic;include_x_axis=True;value=confidence"
+"chart:file=example1b.svg;title=Example 1b average daily temperature;interpolation=cubic;value=confidence"
 ```
 Which results in [<img src="examples/ex1/example1b.svg">](examples/ex1/example1b.svg).
 
 Note that instead of `x-field=date,time`, this new command only has `x-field=date` in the "csv:..." argument. Since there are multiple records with the same `date`, by default, only the last record of that day would get charted. But by adding `value=confidence` to the "chart:..." argument, all the values for that day will be averaged, and then confidence intervals based on the minimum and maximum for that day. Other `value=` values are `min`, `max`, `mean`, `first`, and `last`.  A `value=` of `maxconfidence` graphs the maximum value for the day, while still showing the min/max confidence interval. LIkeways `minconfidence`.
 
-If this is confusing, consider that the behaviour of `value=` in the "chart:..." argument has an aggregation effect that's similar to [GROUP BY](https://www.w3schools.com/sql/sql_groupby.asp) in SQL SELECT statements. Noo doubht you are no longer confused.
+If this is confusing, consider that the behaviour of `value=` in the "chart:..." argument has an aggregation effect that's similar to [GROUP BY](https://www.w3schools.com/sql/sql_groupby.asp) in SQL SELECT statements. No doubt you are no longer confused.
 
-This example also adds `include_x_axis=True` to the "chart:..." argument. This causes the chart to draw the Y scale all the way down to the X axis, which helps make this chart easier to understand, otherwise the confidence intervals get drawn off the bottom of the graph (because PyGal doesn't consider the confidence intervals when computing the automatic scaling range for the Y axis). This is due to the nature of this particular example data set, but a good reminder that some amount of dinking is usually needed to make the charts intelligible
 
 #### [Example 2](examples/ex2) Chart temperature and humidity from three logical data bases, contained across fifteen different CSV files.
 
